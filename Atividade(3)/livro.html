@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Interface Web Exercícios PHP</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #2c3e50; }
+        form { background: #ecf0f1; padding: 15px; margin-bottom: 30px; border-radius: 8px; max-width: 400px; }
+        input[type="text"], input[type="password"], input[type="number"] {
+            width: 100%; padding: 8px; margin: 6px 0 12px 0; box-sizing: border-box;
+            border: 1px solid #ccc; border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #3498db; color: white; padding: 10px 15px; border: none; border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover { background-color: #2980b9; }
+        .msg { margin: 10px 0; color: green; font-weight: bold; }
+        .error { color: red; }
+        .box { display: flex; gap: 50px; }
+        .box > div { flex: 1; }
+    </style>
+</head>
+<body>
+
+<h1>Gerenciamento Livro e Conta Bancária</h1>
+
+<div class="box">
+    <div>
+        <h2>Livro</h2>
+        <p><strong>Título:</strong> <?= htmlspecialchars($livro->titulo) ?></p>
+        <p><strong>Autor:</strong> <?= htmlspecialchars($livro->autor) ?></p>
+        <p><strong>Preço atual:</strong> R$ <?= number_format($livro->getPreco(), 2, ',', '.') ?></p>
+        <p><strong>Estoque atual:</strong> <?= $livro->verEstoque() ?></p>
+
+        <?php if ($msgLivro) echo "<p class='msg'>$msgLivro</p>"; ?>
+
+        <form method="post">
+            <input type="hidden" name="acao_livro" value="alterar_preco">
+            <label for="preco">Alterar preço (R$):</label>
+            <input type="text" id="preco" name="preco" required pattern="\d+([,\.]\d{1,2})?" placeholder="Ex: 59,90">
+            <input type="submit" value="Alterar Preço">
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="acao_livro" value="repor_estoque">
+            <label for="quantidade">Repor estoque:</label>
+            <input type="number" id="quantidade" name="quantidade" min="1" required>
+            <input type="submit" value="Repor Estoque">
+        </form>
+    </div>
+
+    <div>
+        <h2>Conta Bancária</h2>
+        <p><strong>Titular:</strong> <?= htmlspecialchars($conta->titular) ?></p>
+
+        <?php if ($msgConta) echo "<p class='msg'>$msgConta</p>"; ?>
+
+        <form method="post">
+            <input type="hidden" name="acao_conta" value="depositar">
+            <label for="valor_deposito">Depositar (R$):</label>
+            <input type="text" id="valor_deposito" name="valor_deposito" required pattern="\d+([,\.]\d{1,2})?" placeholder="Ex: 100,00">
+            <input type="submit" value="Depositar">
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="acao_conta" value="sacar">
+            <label for="valor_saque">Sacar (R$):</label>
+            <input type="text" id="valor_saque" name="valor_saque" required pattern="\d+([,\.]\d{1,2})?" placeholder="Ex: 50,00">
+            <label for="senha_saque">Senha:</label>
+            <input type="password" id="senha_saque" name="senha_saque" required>
+            <input type="submit" value="Sacar">
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="acao_conta" value="ver_saldo">
+            <label for="senha_saldo">Ver saldo (senha):</label>
+            <input type="password" id="senha_saldo" name="senha_saldo" required>
+            <input type="submit" value="Ver Saldo">
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
